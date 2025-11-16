@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adaptive Cyber Lab - Cybersecurity Training Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0e27;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .page {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 4rem;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00ffff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            fill: #00ffff;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: #00ffff;
+        }
+
+        .nav-links a.active {
+            color: #ff6b6b;
+        }
+
+        .btn-login {
+            padding: 0.75rem 2rem;
+            background: transparent;
+            border: 2px solid #00ffff;
+            color: #00ffff;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-login:hover {
+            background: #00ffff;
+            color: #0a0e27;
+        }
+
+        /* Homepage Hero Section */
+        .hero {
+            padding: 6rem 4rem;
+            text-align: center;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(255, 107, 107, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #00ffff 0%, #00cccc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            color: #ff6b6b;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 2.5rem;
+        }
+
+        .btn-primary {
+            padding: 1rem 2.5rem;
+            background: #00ffff;
+            color: #0a0e27;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: #00cccc;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 255, 255, 0.3);
+        }
+
+        .btn-secondary {
+            padding: 1rem 2.5rem;
+            background: transparent;
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            padding: 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: rgba(26, 31, 58, 0.6);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 2.5rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: #00ffff;
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.2);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            fill: #00ffff;
+        }
+
+        .feature-icon.orange {
+            fill: #ff6b6b;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #00ffff;
+        }
+
+        .feature-card p {
+            color: #b0b0b0;
+            line-height: 1.6;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            padding: 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(26, 31, 58, 0.3);
+        }
+
+        .stat-card {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: #00ffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1.2rem;
+            color: #ff6b6b;
+        }
+
+        /* About Page */
+        .about-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .about-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .about-header h1 {
+            font-size: 3rem;
+            color: #00ffff;
+            margin-bottom: 1rem;
+        }
+
+        .about-content {
+            background: rgba(26, 31, 58, 0.6);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 3rem;
+            line-height: 1.8;
+        }
+
+        .about-content h2 {
+            color: #00ffff;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .about-content p {
+            color: #d0d0d0;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Features Page */
+        .features-page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .features-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .features-header h1 {
+            font-size: 3rem;
+            color: #00ffff;
+            margin-bottom: 1rem;
+        }
+
+        .feature-detail {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 4rem;
+            background: rgba(26, 31, 58, 0.6);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 3rem;
+            align-items: center;
+        }
+
+        .feature-detail:nth-child(even) {
+            direction: rtl;
+        }
+
+        .feature-detail:nth-child(even) .feature-text {
+            direction: ltr;
+        }
+
+        .feature-text h2 {
+            color: #00ffff;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-text p {
+            color: #d0d0d0;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .feature-visual {
+            text-align: center;
+        }
+
+        .feature-visual-icon {
+            width: 200px;
+            height: 200px;
+            fill: #00ffff;
+            filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.5));
+        }
+
+        /* Login & Registration */
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 80px);
+            padding: 2rem;
+        }
+
+        .auth-box {
+            background: rgba(26, 31, 58, 0.8);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 3rem;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 20px 60px rgba(0, 255, 255, 0.1);
+        }
+
+        .auth-box h2 {
+            text-align: center;
+            color: #00ffff;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #b0b0b0;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(10, 14, 39, 0.8);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 5px;
+            color: #ffffff;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #00ffff;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 1rem;
+            background: #00ffff;
+            color: #0a0e27;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .btn-submit:hover {
+            background: #00cccc;
+            transform: translateY(-2px);
+        }
+
+        .auth-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #b0b0b0;
+        }
+
+        .auth-link a {
+            color: #00ffff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .auth-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: calc(100vh - 80px);
+        }
+
+        .sidebar {
+            background: rgba(26, 31, 58, 0.8);
+            border-right: 1px solid rgba(0, 255, 255, 0.2);
+            padding: 2rem 1rem;
+        }
+
+        .user-profile {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid #00ffff;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 255, 255, 0.2);
+        }
+
+        .user-avatar svg {
+            width: 50px;
+            height: 50px;
+            fill: #00ffff;
+        }
+
+        .user-name {
+            color: #00ffff;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .user-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            background: rgba(10, 14, 39, 0.5);
+            border-radius: 5px;
+        }
+
+        .stat-item svg {
+            width: 30px;
+            height: 30px;
+            fill: #00ffff;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00ffff;
+        }
+
+        .stat-name {
+            font-size: 0.9rem;
+            color: #b0b0b0;
+        }
+
+        .dashboard-content {
+            padding: 2rem;
+        }
+
+        .dashboard-header {
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-header h1 {
+            color: #00ffff;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .challenges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .challenge-card {
+            background: rgba(26, 31, 58, 0.6);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+
+        .challenge-card:hover {
+            transform: translateY(-5px);
+            border-color: #00ffff;
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.2);
+        }
+
+        .challenge-difficulty {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 3px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .difficulty-easy {
+            background: rgba(0, 255, 0, 0.2);
+            color: #00ff00;
+            border: 1px solid #00ff00;
+        }
+
+        .difficulty-medium {
+            background: rgba(255, 165, 0, 0.2);
+            color: #ffa500;
+            border: 1px solid #ffa500;
+        }
+
+        .difficulty-hard {
+            background: rgba(255, 0, 0, 0.2);
+            color: #ff0000;
+            border: 1px solid #ff0000;
+        }
+
+        .challenge-card h3 {
+            color: #00ffff;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .challenge-card p {
+            color: #b0b0b0;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .challenge-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            color: #00ffff;
+        }
+
+        .btn-start {
+            width: 100%;
+            padding: 0.75rem;
+            background: transparent;
+            border: 2px solid #00ffff;
+            color: #00ffff;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-start:hover {
+            background: #00ffff;
+            color: #0a0e27;
+        }
+
+        /* Challenge Page */
+        .challenge-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            padding: 2rem;
+            min-height: calc(100vh - 80px);
+        }
+
+        .challenge-info {
+            background: rgba(26, 31, 58, 0.6);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 2rem;
+        }
+
+        .challenge-info h2 {
+            color: #00ffff;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .challenge-timer {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(0, 255, 255, 0.1);
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .timer-display {
+            font-size: 2rem;
+            color: #00ffff;
+            font-weight: bold;
+        }
+
+        .hints-section {
+            margin: 2rem 0;
+        }
+
+        .hint-button {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 107, 107, 0.2);
+            border: 1px solid #ff6b6b;
+            color: #ff6b6b;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .hint-button:hover {
+            background: rgba(255, 107, 107, 0.3);
+        }
+
+        .flag-section {
+            margin-top: 2rem;
+        }
+
+        .flag-section label {
+            display: block;
+            color: #b0b0b0;
+            margin-bottom: 0.5rem;
+        }
+
+        .flag-section input {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(10, 14, 39, 0.8);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 5px;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+
+        .terminal {
+            background: #000000;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            font-family: 'Courier New', monospace;
+            color: #00ff00;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .terminal-header {
+            color: #00ffff;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .terminal-line {
+            margin-bottom: 0.5rem;
+        }
+
+        .terminal-prompt {
+            color: #00ffff;
+        }
+
+        .challenge-actions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-action {
+            padding: 0.75rem;
+            background: rgba(26, 31, 58, 0.8);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            color: #00ffff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-action:hover {
+            background: rgba(0, 255, 255, 0.2);
+            border-color: #00ffff;
+        }
+
+        .lab-status {
+            text-align: right;
+            margin-top: 2rem;
+            color: #00ff00;
+            font-weight: bold;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem 2rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-section {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                border-right: none;
+                border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+            }
+
+            .challenge-container {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-detail {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Homepage -->
+    <div id="homepage" class="page active">
+        <nav class="navbar">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+                </svg>
+                ADAPTIVE CYBER LAB
+            </div>
+            <ul class="nav-links">
+                <li><a onclick="showPage('homepage')" class="active">Home</a></li>
+                <li><a onclick="showPage('about')">About</a></li>
+                <li><a onclick="showPage('features-page')">Features</a></li>
+                <li><a onclick="showPage('login')">Login</a></li>
+            </ul>
+        </nav>
+
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Master Cybersecurity Skills</h1>
+                <p class="subtitle">Adaptive AI-Powered Training Platform</p>
+                <p style="color: #d0d0d0; font-size: 1.1rem; margin-bottom: 2rem;">
+                    Experience personalized cybersecurity training that adapts to your skill level. 
+                    Practice real-world scenarios in isolated lab environments with instant AI feedback.
+                </p>
+                <div class="hero-buttons">
+                    <button class="btn-primary" onclick="showPage('registration')">Get Started</button>
+                    <button class="btn-secondary" onclick="showPage('about')">Learn More</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="features-grid">
+            <div class="feature-card">
+                <svg class="feature-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/>
+                </svg>
+                <h3>Isolated Lab Environments</h3>
+                <p>Practice in safe, simulated networks without risk. Each challenge runs in an isolated container environment.</p>
+            </div>
+
+            <div class="feature-card">
+                <svg class="feature-icon orange" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13 2.05v3.03c3.39.49 6 3.39 6 6.92 0 .9-.18 1.75-.48 2.54l2.6 1.53c.56-1.24.88-2.62.88-4.07 0-5.18-3.95-9.45-9-9.95zM12 19c-3.87 0-7-3.13-7-7 0-3.53 2.61-6.43 6-6.92V2.05c-5.06.5-9 4.76-9 9.95 0 5.52 4.47 10 9.99 10 3.31 0 6.24-1.61 8.06-4.09l-2.6-1.53C16.17 17.98 14.21 19 12 19z"/>
+                </svg>
+                <h3>AI Adaptation</h3>
+                <p>Training adjusts to your level. AI analyzes your performance and provides personalized challenge recommendations.</p>
+            </div>
+
+            <div class="feature-card">
+                <svg class="feature-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+                </svg>
+                <h3>Real-time Feedback</h3>
+                <p>Instant evaluation and guidance. Get immediate feedback on your actions and learn from mistakes in real-time.</p>
+            </div>
+        </section>
+
+        <section class="stats-section">
+            <div class="stat-card">
+                <div class="stat-number">1000+</div>
+                <div class="stat-label">Students</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">50+</div>
+                <div class="stat-label">Challenges</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">95%</div>
+                <div class="stat-label">Success Rate</div>
+            </div>
+        </section>
+    </div>
+
+    <!-- About Page -->
+    <div id="about" class="page">
+        <nav class="navbar">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+                </svg>
+                ADAPTIVE CYBER LAB
+            </div>
+            <ul class="nav-links">
+                <li><a onclick="showPage('homepage')">Home</a></li>
+                <li><a onclick="showPage('about')" class="active">About</a></li>
+                <li><a onclick="showPage('features-page')">Features</a></li>
+                <li><a onclick="showPage('login')">Login</a></li>
+            </ul>
+        </nav>
+
+        <div class="about-container">
+            <div class="about-header">
+                <h1>About Adaptive Cyber Lab</h1>
+                <p style="color: #b0b0b0; font-size: 1.2rem;">Revolutionizing Cybersecurity Education</p>
+            </div>
+
+            <div class="about-content">
+                <h2>Our Mission</h2>
+                <p>
+                    The Adaptive Smart Lab for Cybersecurity Skills Training is an innovative educational platform designed to address the growing need for skilled cybersecurity professionals. Our mission is to provide personalized, adaptive learning experiences that help students master essential cybersecurity skills through hands-on practice in realistic scenarios.
+                </p>
+
+                <h2>The Challenge</h2>
+                <p>
+                    Traditional cybersecurity training often follows a one-size-fits-all approach, which fails to account for individual learning paces and skill levels. Students may struggle with content that is too advanced or become bored with material that is too basic. This gap in personalized education has created a need for adaptive learning systems that can dynamically adjust to each learner's needs.
+                </p>
+
+                <h2>Our Solution</h2>
+                <p>
+                    Our platform leverages artificial intelligence and adaptive learning algorithms to create a personalized training experience for each student. The system continuously analyzes student performance, identifies knowledge gaps, and adjusts the difficulty and content of challenges accordingly. This ensures that every learner is appropriately challenged and supported throughout their cybersecurity education journey.
+                </p>
+
+                <h2>Key Features</h2>
+                <p>
+                    <strong>Isolated Lab Environments:</strong> Students practice in safe, containerized environments that simulate real-world networks and systems without any risk to actual infrastructure.
+                </p>
+                <p>
+                    <strong>AI-Powered Adaptation:</strong> Our intelligent system tracks progress, identifies strengths and weaknesses, and recommends personalized learning paths to optimize skill development.
+                </p>
+                <p>
+                    <strong>Real-World Scenarios:</strong> Challenges are based on actual cybersecurity threats and vulnerabilities, providing practical experience that directly translates to professional skills.
+                </p>
+                <p>
+                    <strong>Instant Feedback:</strong> Students receive immediate evaluation and guidance, allowing them to learn from mistakes and reinforce correct techniques in real-time.
+                </p>
+
+                <h2>Technology Stack</h2>
+                <p>
+                    Built using modern web technologies including HTML5, CSS3, and JavaScript (ES6+), our platform provides a responsive, interactive user experience. The system architecture supports scalability and can accommodate growing numbers of students and increasingly complex training scenarios.
+                </p>
+
+                <h2>Research Foundation</h2>
+                <p>
+                    This project is based on extensive research into adaptive learning systems and modern cybersecurity training methodologies. Our design incorporates best practices from educational technology and cybersecurity domains to create an effective, engaging learning environment that prepares students for real-world challenges in the cybersecurity field.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Page -->
+    <div id="features-page" class="page">
+        <nav class="navbar">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+                </svg>
+                ADAPTIVE CYBER LAB
+            </div>
+            <ul class="nav-links">
+                <li><a onclick="showPage('homepage')">Home</a></li>
+                <li><a onclick="showPage('about')">About</a></li>
+                <li><a onclick="showPage('features-page')" class="active">Features</a></li>
+                <li><a onclick="showPage('login')">Login</a></li>
+            </ul>
+        </nav>
+
+        <div class="features-page">
+            <div class="features-header">
+                <h1>Platform Features</h1>
+                <p style="color: #b0b0b0; font-size: 1.2rem;">Comprehensive Tools for Cybersecurity Training</p>
+            </div>
+
+            <div class="feature-detail">
+                <div class="feature-text">
+                    <h2>Adaptive Learning System</h2>
+                    <p>
+                        Our AI-powered adaptive learning engine continuously monitors student performance and adjusts challenge difficulty in real-time. The system analyzes completion times, error patterns, and hint usage to build a comprehensive profile of each learner's strengths and weaknesses.
+                    </p>
+                    <p>
+                        Based on this analysis, the platform recommends personalized learning paths, ensuring that students are always working on challenges that match their current skill level while gradually increasing difficulty to promote growth.
+                    </p>
+                </div>
+                <div class="feature-visual">
+                    <svg class="feature-visual-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M13 2.05v3.03c3.39.49 6 3.39 6 6.92 0 .9-.18 1.75-.48 2.54l2.6 1.53c.56-1.24.88-2.62.88-4.07 0-5.18-3.95-9.45-9-9.95zM12 19c-3.87 0-7-3.13-7-7 0-3.53 2.61-6.43 6-6.92V2.05c-5.06.5-9 4.76-9 9.95 0 5.52 4.47 10 9.99 10 3.31 0 6.24-1.61 8.06-4.09l-2.6-1.53C16.17 17.98 14.21 19 12 19z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="feature-detail">
+                <div class="feature-text">
+                    <h2>Isolated Lab Environments</h2>
+                    <p>
+                        Each challenge runs in a completely isolated containerized environment, providing students with safe spaces to practice penetration testing, vulnerability assessment, and other cybersecurity techniques without any risk to real systems.
+                    </p>
+                    <p>
+                        These labs simulate realistic network configurations, operating systems, and vulnerable applications, giving students hands-on experience with the same tools and techniques used by professional security researchers and ethical hackers.
+                    </p>
+                </div>
+                <div class="feature-visual">
+                    <svg class="feature-visual-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="feature-detail">
+                <div class="feature-text">
+                    <h2>Real-time Performance Tracking</h2>
+                    <p>
+                        Comprehensive analytics dashboard provides both students and instructors with detailed insights into learning progress. Track metrics including challenges completed, time spent, hint usage, and skill development across different cybersecurity domains.
+                    </p>
+                    <p>
+                        Visual progress indicators and achievement badges motivate students to continue learning and provide clear milestones for skill development. Instructors can monitor class-wide performance and identify students who may need additional support.
+                    </p>
+                </div>
+                <div class="feature-visual">
+                    <svg class="feature-visual-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="feature-detail">
+                <div class="feature-text">
+                    <h2>Diverse Challenge Library</h2>
+                    <p>
+                        Access a comprehensive library of cybersecurity challenges covering topics including SQL injection, cross-site scripting (XSS), cryptography, network security, web application security, and more. Challenges range from beginner to advanced levels.
+                    </p>
+                    <p>
+                        Each challenge includes detailed descriptions, learning objectives, and hints to guide students through the problem-solving process. New challenges are regularly added to keep content fresh and relevant to current cybersecurity threats.
+                    </p>
+                </div>
+                <div class="feature-visual">
+                    <svg class="feature-visual-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="feature-detail">
+                <div class="feature-text">
+                    <h2>Instant Feedback & Hints</h2>
+                    <p>
+                        Students receive immediate feedback on their actions, helping them understand what works and what doesn't in real-time. The hint system provides progressive guidance, starting with subtle clues and gradually offering more detailed assistance if needed.
+                    </p>
+                    <p>
+                        This approach encourages independent problem-solving while ensuring that students never get completely stuck. The feedback system also explains why certain approaches succeed or fail, reinforcing learning and building deeper understanding.
+                    </p>
+                </div>
+                <div class="feature-visual">
+                    <svg class="feature-visual-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 12h-2v-2h2v2zm0-4h-2V6h2v4z"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Page -->
+    <div id="login" class="page">
+        <nav class="navbar">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+                </svg>
+                ADAPTIVE CYBER LAB
+            </div>
+            <ul class="nav-links">
+                <li><a onclick="showPage('homepage')">Home</a></li>
+                <li><a onclick="showPage('about')">About</a></li>
+                <li><a onclick="showPage('features-page')">Features</a></li>
+                <li><a onclick="showPage('login')" class="active">Login</a></li>
+            </ul>
+        </nav>
+
+        <div class="auth-container">
+            <div class="auth-box">
+                <h2>Login</h2>
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="btn-submit">Login</button>
+                </form>
+                <div class="auth-link">
+                    Don't have an account? <a onclick="showPage('registration')">Register here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Page -->
+    <div id="registration" class="page">
+        <nav class="navbar">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+                </svg>
+                ADAPTIVE CYBER LAB
+            </div>
+            <ul class="nav-links">
+                <li><a onclick="showPage('homepage')">Home</a></li>
+                <li><a onclick="showPage('about')">About</a></li>
+                <li><a onclick="showPage('features-page')">Features</a></li>
+                <li><a onclick="showPage('login')">Login</a></li>
+            </ul>
+        </nav>
+
+        <div class="auth-container">
+            <div class="auth-box">
+                <h2>Create Account</h2>
+                <form onsubmit="handleRegistration(event)">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" placeholder="Create a password" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Role</label>
+                        <select required>
+                            <option value="">Select your role</option>
+                            <option value="student">Student</option>
+                            <option value="instructor">Instructor</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-submit">Register</button>
+                </form>
+                <div class="auth-link">
+                    Already have an account? <a onclick="showPage('login')">Login here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Student Dashboard -->
+    <div id="student-dashboard" class="page">
+        <nav class="navbar">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+                </svg>
+                ADAPTIVE CYBER LAB
+            </div>
+            <ul class="nav-links">
+                <li><a onclick="showPage('student-dashboard')" class="active">Dashboard</a></li>
+                <li><a onclick="showPage('homepage')">Logout</a></li>
+            </ul>
+        </nav>
+
+        <div class="dashboard">
+            <aside class="sidebar">
+                <div class="user-profile">
+                    <div class="user-avatar">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                    </div>
+                    <div class="user-name">@student_01</div>
+                </div>
+
+                <div class="user-stats">
+                    <div class="stat-item">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
+                        </svg>
+                        <div>
+                            <div class="stat-value">042</div>
+                            <div class="stat-name">SOLVED</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-item">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                        <div>
+                            <div class="stat-value">1,234</div>
+                            <div class="stat-name">POINTS</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-item">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                        </svg>
+                        <div>
+                            <div class="stat-value">#12</div>
+                            <div class="stat-name">RANK</div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="dashboard-content">
+                <div class="dashboard-header">
+                    <h1>AVAILABLE CHALLENGES</h1>
+                </div>
+
+                <div class="challenges-grid">
+                    <div class="challenge-card">
+                        <span class="challenge-difficulty difficulty-easy">EASY</span>
+                        <h3>Basic SQL Injection</h3>
+                        <p>Practice exploiting a basic SQL injection vulnerability.</p>
+                        <div class="challenge-meta">
+                            <span>30 min</span>
+                            <span>100 pts</span>
+                        </div>
+                        <button class="btn-start" onclick="showPage('challenge')">START</button>
+                    </div>
+
+                    <div class="challenge-card">
+                        <span class="challenge-difficulty difficulty-easy">EASY</span>
+                        <h3>Cross-Site Scripting (XSS)</h3>
+                        <p>Learn to identify and exploit XSS vulnerabilities in web applications.</p>
+                        <div class="challenge-meta">
+                            <span>25 min</span>
+                            <span>100 pts</span>
+                        </div>
+                        <button class="btn-start" onclick="showPage('challenge')">START</button>
+                    </div>
+
+                    <div class="challenge-card">
+                        <span class="challenge-difficulty difficulty-medium">MEDIUM</span>
+                        <h3>Authentication Bypass</h3>
+                        <p>Discover and exploit authentication vulnerabilities to gain unauthorized access.</p>
+                        <div class="challenge-meta">
+                            <span>45 min</span>
+                            <span>200 pts</span>
+                        </div>
+                        <button class="btn-start" onclick="showPage('challenge')">START</button>
+                    </div>
+
+                    <div class="challenge-card">
+                        <span class="challenge-difficulty difficulty-medium">MEDIUM</span>
+                        <h3>File Upload Vulnerability</h3>
+                        <p>Exploit insecure file upload mechanisms to execute malicious code.</p>
+                        <div class="challenge-meta">
+                            <span>40 min</span>
+                            <span>200 pts</span>
+                        </div>
+                        <button class="btn-start" onclick="showPage('challenge')">START</button>
+                    </div>
+
+                    <div class="challenge-card">
+                        <span class="challenge-difficulty difficulty-hard">HARD</span>
+                        <h3>Advanced Cryptography</h3>
+                        <p>Crack complex encryption schemes and recover hidden data.</p>
+                        <div class="challenge-meta">
+                            <span>60 min</span>
+                            <span>300 pts</span>
+                        </div>
+                        <button class="btn-start" onclick="showPage('challenge')">START</button>
+                    </div>
+
+                    <div class="challenge-card">
+                        <span class="challenge-difficulty difficulty-hard">HARD</span>
+                        <h3>Binary Exploitation</h3>
+                        <p>Analyze and exploit vulnerabilities in compiled binary applications.</p>
+                        <div class="challenge-meta">
+                            <span>90 min</span>
+                            <span>400 pts</span>
+                        </div>
+                        <button class="btn-start" onclick="showPage('challenge')">START</button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Challenge Page -->
+    <div id="challenge" class="page">
+        <nav class="navbar">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+                </svg>
+                ADAPTIVE CYBER LAB
+            </div>
+            <ul class="nav-links">
+                <li><a onclick="showPage('student-dashboard')">Back to Dashboard</a></li>
+            </ul>
+        </nav>
+
+        <div class="challenge-container">
+            <div class="challenge-info">
+                <h2>SQL Injection Challenge #1</h2>
+                <span class="challenge-difficulty difficulty-medium">MEDIUM</span>
+
+                <div class="challenge-timer">
+                    <div class="timer-display">15:30 remaining</div>
+                </div>
+
+                <p style="color: #d0d0d0; margin: 1.5rem 0;">
+                    Practice your skills with this introductory SQL injection challenge.
+                </p>
+
+                <div class="hints-section">
+                    <h3 style="color: #00ffff; margin-bottom: 1rem;">Hints</h3>
+                    <button class="hint-button">Hint 1</button>
+                    <button class="hint-button">Hint 2</button>
+                </div>
+
+                <div class="flag-section">
+                    <label>Flag</label>
+                    <input type="text" placeholder="Enter the flag you discovered">
+                    <button class="btn-submit">Submit Flag</button>
+                </div>
+
+                <div class="challenge-actions">
+                    <button class="btn-action">Reset Environment</button>
+                    <button class="btn-action">Request Hint</button>
+                    <button class="btn-action">End Session</button>
+                </div>
+
+                <div class="lab-status">Lab Status: Running</div>
+            </div>
+
+            <div class="terminal">
+                <div class="terminal-header">guac@guacamole:~$</div>
+                <div class="terminal-line">
+                    <span class="terminal-prompt">Apache Guacamole</span> Copyright (c) 2010-2024 Apache Software Foundation or its licensors.
+                </div>
+                <div class="terminal-line"><br></div>
+                <div class="terminal-line"><span class="terminal-prompt">guac@guacamole:~$</span></div>
+                <div class="terminal-line"><br></div>
+                <div class="terminal-line" style="color: #00ffff;">Welcome to the SQL Injection Lab Environment</div>
+                <div class="terminal-line"><br></div>
+                <div class="terminal-line">Target: http://vulnerable-app.local/login.php</div>
+                <div class="terminal-line">Objective: Bypass authentication and retrieve the flag</div>
+                <div class="terminal-line"><br></div>
+                <div class="terminal-line"><span class="terminal-prompt">guac@guacamole:~$</span> <span style="animation: blink 1s infinite;">_</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+
+            // Show selected page
+            const selectedPage = document.getElementById(pageId);
+            if (selectedPage) {
+                selectedPage.classList.add('active');
+            }
+
+            // Update active nav link
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => link.classList.remove('active'));
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            showPage('student-dashboard');
+        }
+
+        function handleRegistration(event) {
+            event.preventDefault();
+            showPage('student-dashboard');
+        }
+
+        // Add blinking cursor animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes blink {
+                0%, 50% { opacity: 1; }
+                51%, 100% { opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
